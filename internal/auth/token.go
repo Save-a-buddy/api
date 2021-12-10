@@ -17,7 +17,7 @@ func GenerateToken(data *model.Login) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claim)
-	signedToken, err := token.SignedString("key_to_sign")
+	signedToken, err := token.SignedString(signKey)
 
 	if err != nil {
 		return "", err
@@ -45,5 +45,5 @@ func ValidateToken(t string) (model.Claim, error) {
 }
 
 func verifyFunction(t *jwt.Token) (interface{}, error) {
-	return "key_to_sign", nil
+	return verifyKey, nil
 }
