@@ -1,6 +1,6 @@
 server:
   AppVersion: 1.0.0
-  Port: :9090
+  Port: :9199
   Mode: Development
   JwtSecretKey: secretkey
   CookieName: jwt-token
