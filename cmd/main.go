@@ -6,13 +6,13 @@ import (
 	"os"
 	"save-a-buddy-api/config"
 	"save-a-buddy-api/internal/auth"
+	"save-a-buddy-api/internal/server"
 	"save-a-buddy-api/model"
 	"save-a-buddy-api/pkg/utils"
 )
 
 func main() {
 	e := echo.New()
-
 	configPath := utils.GetConfigPath(os.Getenv("config"))
 
 	cfgFile, err := config.LoadConfig(configPath)
@@ -20,7 +20,7 @@ func main() {
 		e.Logger.Fatalf("LoadConfig: %v", err)
 	}
 
-	_, err = config.ParseConfig(cfgFile)
+	cfg, err := config.ParseConfig(cfgFile)
 	if err != nil {
 		e.Logger.Fatalf("ParseConfig: %v", err)
 	}
@@ -28,6 +28,10 @@ func main() {
 	err = auth.LoadFiles("certificates/app.rsa", "certificates/app.rsa.pub")
 	if err != nil {
 		e.Logger.Fatalf("Can't be loaded certificates: %v", err)
+	}
+	s := server.New(e, cfg)
+	if err := s.RunServer(); err != nil {
+		e.Logger.Fatal(err)
 	}
 
 	e.GET("/", func(c echo.Context) error {
@@ -55,7 +59,7 @@ func main() {
 		return c.JSON(http.StatusOK, response)
 	})
 
-	e.Logger.Fatal(e.Start(":9199"))
+
 }
 
 func isValidToken(data *model.Login) bool {
