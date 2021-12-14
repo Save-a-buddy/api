@@ -27,7 +27,7 @@ func (s Server) RunServer() error {
 		Addr: s.config.Server.Port,
 	}
 
-	if err := s.HandlerRoute(s.echo); err != nil {
+	if err := s.HandlerRoute(); err != nil {
 		return err
 	}
 
