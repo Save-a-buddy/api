@@ -6,7 +6,7 @@ import (
 	"save-a-buddy-api/internal/auth"
 )
 
-func Authentication(next echo.HandlerFunc) echo.HandlerFunc {
+func AuthenticationMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Request().Header.Get("Authorization")
 		_, err := auth.ValidateToken(token)

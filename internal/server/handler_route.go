@@ -1,17 +1,26 @@
 package server
 
 import (
-	"github.com/labstack/echo/v4"
-	"save-a-buddy-api/internal/enrollment/controller"
+	loginController "save-a-buddy-api/internal/enrollment/controller"
+	userController "save-a-buddy-api/internal/user/controller"
+	"save-a-buddy-api/midleware"
 )
 
-func (s *Server) HandlerRoute(e *echo.Echo) error {
+func (s *Server) HandlerRoute() error {
 	apiGroup := s.echo.Group("/api/v1")
-	authGroup := apiGroup.Group("/user")
+	userGroup := apiGroup.Group("/user")
 
-	//LoginController
-	lc := controller.LoginControllerNew(s.config)
-	authGroup.POST("/login", lc.Login())
+	//Controllers
+
+	lc := loginController.NewLoginController(s.config)
+	uc := userController.NewUserController(s.config)
+
+	//Login
+	apiGroup.POST("/login", lc.Login())
+
+	//User
+	userGroup.Use(midleware.AuthenticationMiddleware)
+	userGroup.GET("", uc.GetUsersList())
 
 	return nil
 }

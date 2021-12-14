@@ -9,10 +9,10 @@ import (
 )
 
 type LoginController struct {
-	cfg    *config.Config
+	cfg *config.Config
 }
 
-func LoginControllerNew(cfg *config.Config) LoginController {
+func NewLoginController(cfg *config.Config) LoginController {
 	return LoginController{cfg: cfg}
 }
 
