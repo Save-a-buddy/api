@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	Server ServerConfig
+	Server  ServerConfig
+	MongoDB MongoDb
 }
 
 type ServerConfig struct {
@@ -23,6 +24,10 @@ type ServerConfig struct {
 	CtxDefaultTimeout time.Duration
 	CSRF              bool
 	Debug             bool
+}
+
+type MongoDb struct {
+	MongoUri string
 }
 
 // LoadConfig Load config file from given path
