@@ -3,17 +3,19 @@ package server
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
 	"save-a-buddy-api/config"
 )
 
 type Server struct {
-	echo   *echo.Echo
-	config *config.Config
+	echo        *echo.Echo
+	config      *config.Config
+	mongoClient *mongo.Client
 }
 
-func New(echo *echo.Echo, config *config.Config) *Server {
-	return &Server{echo: echo, config: config}
+func New(echo *echo.Echo, config *config.Config, mongoClient *mongo.Client) *Server {
+	return &Server{echo: echo, config: config, mongoClient: mongoClient}
 }
 
 func (s Server) RunServer() error {
