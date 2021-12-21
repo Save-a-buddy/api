@@ -3,7 +3,7 @@ package server
 import (
 	loginController "save-a-buddy-api/internal/enrollment/controller"
 	userController "save-a-buddy-api/internal/user/controller"
-	"save-a-buddy-api/midleware"
+	"save-a-buddy-api/internal/user/service"
 )
 
 func (s *Server) HandlerRoute() error {
@@ -13,13 +13,14 @@ func (s *Server) HandlerRoute() error {
 	//Controllers
 
 	lc := loginController.NewLoginController(s.config)
-	uc := userController.NewUserController(s.config)
+	us := service.New(s.mongoClient)
+	uc := userController.NewUserController(s.config, us)
 
 	//Login
 	apiGroup.POST("/login", lc.Login())
 
 	//User
-	userGroup.Use(midleware.AuthenticationMiddleware)
+	//userGroup.Use(midleware.AuthenticationMiddleware)
 	userGroup.GET("", uc.GetUsersList())
 
 	return nil
