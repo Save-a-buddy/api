@@ -9,10 +9,10 @@ import (
 
 type UserController struct {
 	cfg         *config.Config
-	userService service.UserService
+	userService service.IUserService
 }
 
-func NewUserController(cfg *config.Config, userService service.UserService) UserController {
+func NewUserController(cfg *config.Config, userService service.IUserService) UserController {
 	return UserController{cfg: cfg, userService: userService}
 }
 

@@ -3,6 +3,7 @@ package server
 import (
 	loginController "save-a-buddy-api/internal/enrollment/controller"
 	userController "save-a-buddy-api/internal/user/controller"
+	"save-a-buddy-api/internal/user/repository"
 	"save-a-buddy-api/internal/user/service"
 )
 
@@ -13,7 +14,8 @@ func (s *Server) HandlerRoute() error {
 	//Controllers
 
 	lc := loginController.NewLoginController(s.config)
-	us := service.New(s.mongoClient)
+	ur := repository.New(s.mongoClient)
+	us := service.New(ur)
 	uc := userController.NewUserController(s.config, us)
 
 	//Login

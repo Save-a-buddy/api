@@ -7,6 +7,12 @@ import (
 	"log"
 )
 
+type IMongoDb interface {
+	NewConnection(mongoUri string) *MongoDb
+	ConnectToDB() *mongo.Client
+	ValidateConnection(client *mongo.Client) bool
+}
+
 type MongoDb struct {
 	MongoURI string
 }
