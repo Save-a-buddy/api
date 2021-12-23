@@ -31,13 +31,13 @@ func main() {
 	}
 
 	mongoDb := db.NewConnection(cfg.MongoDB.MongoUri)
-	mongoClient := mongoDb.ConnectToDB()
+	mongoClient := mongoDb.Connect()
 	mongoConnect := db.ValidateConnection(mongoClient)
 	if mongoConnect == true {
 		log.Printf("MongoDB connected")
 	}
 
-	s := server.New(e, cfg, mongoClient)
+	s := server.New(e, cfg, mongoDb)
 	if err := s.RunServer(); err != nil {
 		e.Logger.Fatal(err)
 	}

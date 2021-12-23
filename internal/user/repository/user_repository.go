@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"log"
+	"save-a-buddy-api/db"
 	"save-a-buddy-api/model"
 )
 
@@ -13,15 +13,15 @@ type IUserRepository interface {
 }
 
 type UserRepository struct {
-	mongoClient *mongo.Client
+	mongodb *db.MongoDb
 }
 
-func New(mongoClient *mongo.Client) UserRepository {
-	return UserRepository{mongoClient: mongoClient}
+func New(mongodb *db.MongoDb) UserRepository {
+	return UserRepository{mongodb: mongodb}
 }
 
 func (ur UserRepository) FindUsersDb() (model.Users, error) {
-	collection := ur.mongoClient.Database("myFirstDatabase").Collection("user")
+	collection := ur.mongodb.MongoUserCollection()
 	var users model.Users
 	filter := bson.D{}
 

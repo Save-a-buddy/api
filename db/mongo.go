@@ -13,17 +13,24 @@ type IMongoDb interface {
 	ValidateConnection(client *mongo.Client) bool
 }
 
+var mongoClient *mongo.Client
+
+const (
+	collectionName = "user"
+	dataBaseName   = "myFirstDatabase"
+)
+
 type MongoDb struct {
-	MongoURI string
+	mongoURI string
 }
 
 func NewConnection(mongoUri string) *MongoDb {
-	return &MongoDb{MongoURI: mongoUri}
+	return &MongoDb{mongoURI: mongoUri}
 }
 
-// ConnectToDB Connect to Mongo DB
-func (m MongoDb) ConnectToDB() *mongo.Client {
-	clientOptions := options.Client().ApplyURI(m.MongoURI)
+// Connect to Mongo DB
+func (m MongoDb) Connect() *mongo.Client {
+	clientOptions := options.Client().ApplyURI(m.mongoURI)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
@@ -36,8 +43,16 @@ func (m MongoDb) ConnectToDB() *mongo.Client {
 		return client
 	}
 
+	mongoClient = client
+
 	log.Printf("Connected to DB")
 	return client
+}
+
+func (m MongoDb) MongoUserCollection() *mongo.Collection {
+
+	userCollection := mongoClient.Database(dataBaseName).Collection(collectionName)
+	return userCollection
 }
 
 // ValidateConnection Validate Connection by PING
