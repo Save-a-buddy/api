@@ -14,7 +14,7 @@ func (s *Server) HandlerRoute() error {
 	//Controllers
 
 	lc := loginController.NewLoginController(s.config)
-	ur := repository.New(s.mongoClient)
+	ur := repository.New(s.MongoDb)
 	us := service.New(ur)
 	uc := userController.NewUserController(s.config, us)
 
