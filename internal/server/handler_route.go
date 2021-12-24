@@ -22,6 +22,7 @@ func (s *Server) HandlerRoute() error {
 	apiGroup.POST("/login", lc.Login())
 
 	//User
+	//apiGroup.Use(midleware.FireBaseSetupMiddleware)
 	//userGroup.Use(midleware.AuthenticationMiddleware)
 	userGroup.GET("", uc.GetUsersList())
 
